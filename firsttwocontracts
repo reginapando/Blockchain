@@ -1,0 +1,46 @@
+pragma solidity 0.6.6;
+contract HelloWorld {
+    string public message1 = "hello Karla";
+    string public message2 = "hello Carlos";
+    // My message is Hello Karla
+    uint public number = 100;
+    bool public isHappy = true;
+    //Are yoy happy? Yes
+    address public ContractCreator = 0x2F45DF65487c6012D19bF9D3DA6773eCC254045A;
+    uint[]public numbers = [1,2,20,40,61];
+    //I have a list of public numbers. And these numbers are 1,2,20,40,61
+    string[] public messages = ["taco","car","Regina","Rafa"];
+    //I have a list of words. And these words are: taco, car, Regina and Rafa. 
+    // array is [] or the index, they mean the same
+    
+    
+        function getMessage1 () public view returns (string memory){
+        return message1;
+        
+    }
+        function getMessage2 () public view returns (string memory){
+        return message2;
+        
+    }
+    
+    
+}
+
+pragma solidity 0.6.6;
+contract Bank{
+    struct Client{
+        string name;
+        uint age;
+        string domicilio;
+    }
+    
+    Client[]public costumers; 
+    
+    function createClient (string memory name, uint age, string memory domicilio) public{
+        Client memory newClient;
+        newClient.name=name;
+        newClient.age=age;
+        newClient.domicilio=domicilio;
+        costumers.push(newClient);
+    }
+}
