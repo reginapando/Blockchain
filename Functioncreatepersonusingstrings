@@ -1,0 +1,45 @@
+pragma solidity 0.6.6;
+contract PatientRegistration{
+    struct Person{
+        
+        string name; 
+        uint height; 
+        uint age; 
+        string id; 
+        string maritalstatus; 
+        uint kids; 
+    }
+    
+Person [] public people;
+
+function createPerson (string memory name, uint height, uint age, string memory id, string memory maritalstatus, uint kids) public{
+    
+    Person memory newPerson;
+    newPerson.id = id; 
+    newPerson.height = height; 
+    newPerson.name = name; 
+    newPerson.age = age; 
+    newPerson.maritalstatus = maritalstatus; 
+    newPerson.kids = kids; 
+    people.push (newPerson);
+    
+}
+}
+pragma solidity 0.6.6; 
+contract HelloWorld{
+    struct Person{
+        string name; 
+        uint height; 
+        uint age; 
+        }
+        
+        Person [] public people; 
+        
+        function createPerson (string memory name, uint height, uint age) public{
+            Person memory NewPerson; 
+            NewPerson.name = name; 
+            NewPerson.height = height; 
+            NewPerson.age = age; 
+            people.push (NewPerson);
+        }
+}
