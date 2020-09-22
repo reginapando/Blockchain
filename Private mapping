@@ -1,0 +1,25 @@
+pragma solidity 0.6.6;
+contract HelloWorld{
+    struct Person{
+        string name; 
+        uint height; 
+        uint age;
+    }
+    
+mapping (address => Person) private people; 
+
+function createPerson (string memory name, uint age, uint height) public{
+    
+    address creator = msg.sender; 
+    Person memory NewPerson;
+    NewPerson.name=name;
+    NewPerson.height=height;
+    NewPerson.age=age;
+    people[creator]=NewPerson;
+}
+
+    function getPerson ()public view returns (string memory name, uint age, uint height){
+         address creator = msg.sender;
+        return (people[creator].name, people [creator].age, people [creator].height);
+    }
+}
