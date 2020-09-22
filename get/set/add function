@@ -1,0 +1,29 @@
+pragma solidity 0.6.6;
+contract HelloWorld{
+    
+    string public message = "Hello World";
+    string [] public messages = ["Hello","No","Yes"];
+    uint public number = 123;
+    uint[]public numbers = [1,23,34];
+    
+    function getMessage ()public view returns (string memory){
+        return message;
+    }
+    function setMessage (string memory newMessage) public{
+        message = newMessage;
+    }
+    
+    function getNumber (uint index) public view returns (uint){
+        return numbers [index];
+    }
+    
+    function setNumber (uint newNumber, uint index) public{
+        numbers [index] = newNumber;
+        // Any number within the index can be chosen and changed to a new number.
+    }
+    
+    function addNumber (uint newNumber) public{
+        numbers.push(newNumber);
+        // I am pushing a new number to the list
+    }
+}
