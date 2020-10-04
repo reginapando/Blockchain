@@ -1,0 +1,42 @@
+pragma solidity 0.6.6;
+contract HelloWorld{
+    struct Person{
+        string name; 
+        uint height; 
+        uint age;
+        bool senior;
+        //a person who is of older age 
+    }
+    
+mapping (address => Person) private people;
+// the address is the key and will give you a value that is the Person
+
+function createPerson (string memory name, uint height,uint age) public{
+    require (age < 150, "people must be below the age of 150");
+    
+    address creator = msg.sender; 
+    // msg.sender is the owner of the address and that's why we call it creator
+    Person memory NewPerson;
+    NewPerson.name=name;
+    NewPerson.height=height;
+    NewPerson.age=age;
+  
+    if (age>= 65){
+    NewPerson.senior=true;
+    }
+    else{
+        NewPerson.senior=false;
+    }
+    
+    
+    people[creator]=NewPerson;
+    //this is how you add people to the mapping, with the uper sentence
+    //you add this creator into the people's mapping to give you a New Person
+}
+
+    function getPerson ()public view returns (string memory name, uint age, uint height, bool senior){
+         address creator = msg.sender;
+         //the one who will get the info when introducing the address will be only the message sender
+        return (people[creator].name, people [creator].age, people [creator].height, people[creator].senior);
+    }
+}
