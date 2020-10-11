@@ -1,0 +1,91 @@
+pragma solidity 0.6.6;
+contract TECDEMONTERREY{
+    struct Person{
+        string name; 
+        uint score; 
+        uint age;
+        bool senior;
+        //a person who is of older age 
+    }
+    
+    address public owner; 
+    //in the variable you're saying that you create another name that is the owner of the bank and that name reflects and ethereum address
+    
+constructor () public{
+    // a constructor is a data structure that is getting executed automatically when you deploy the contract at the beginning
+    //when you deploy the contract you're telling it very important info that the owner or admin is the msg.sender
+    //same ability to add and save info but for the owner or admin of the contract, he'll interact with the Delete function
+    owner = msg.sender;
+}
+
+mapping (address => Person) private people;
+address [] private creators; 
+//"lets remeber that creators is like the clients"
+//you'll get the number of people when registering
+
+function createPerson (string memory name, uint score,uint age) public{
+    require (age < 150, "people must be below the age of 150");
+    
+    Person memory NewPerson;
+    NewPerson.name=name;
+    NewPerson.score=score;
+    NewPerson.age=age;
+  
+    if (age>= 65){
+    NewPerson.senior=true;
+    }
+    else{
+        NewPerson.senior=false;
+    }
+    
+    insertPerson (NewPerson);
+    creators.push(msg.sender);
+    //every single client that will create itlself will have a number
+    
+    assert (
+        keccak256(
+            abi.encodePacked (
+                people[msg.sender].name,
+                people[msg.sender].score,
+                people [msg.sender].age,
+                people[msg.sender].senior) == keccak256 (
+                    abi.encodePacked (
+                        NewPerson.name,
+                        NewPerson.score,
+                        NewPerson.age,
+                        NewPerson.senior)));
+                     
+                        //you're confirming that the message.sender inside the people mapping == the value new person that gets created
+    //the value of the person that gets added should be the same value as the person who is adding 
+    //same hexagesimal string, assert will confirm values are equal // both values should be in hexagesimal strings
+}
+    
+function insertPerson (Person memory NewPerson) private{
+        address creator = msg.sender;
+        people[creator] = NewPerson;
+        
+}
+
+    function getPerson ()public view returns (string memory name, uint age, uint score, bool senior){
+         address creator = msg.sender;
+         //the one who will introduce the address will be the message sender / is the client
+         //this is the ability of the clients to add and save information
+        return (people[creator].name, people [creator].age, people [creator].height, people[creator].senior);
+    }
+    
+    function deletePerson (address creator) public{
+    //to delete a person you're going to use the address of the creator or the client    
+    require (msg.sender == owner);
+    //even though its public only the owner will be able to interact with it   
+    delete people [creator];
+    //you will delete the creator inside the people mapping
+    assert (people[creator].age == 0);
+    }
+    
+    function getCreator (uint index) public view returns (address){
+        require (msg.sender == owner);
+        return creators [index];
+        //you need it for the creators array so that you can see the numbers
+    }
+    
+}
