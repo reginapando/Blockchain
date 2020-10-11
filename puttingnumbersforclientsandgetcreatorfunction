@@ -1,0 +1,73 @@
+pragma solidity 0.6.6;
+contract HelloWorld{
+    struct Person{
+        string name; 
+        uint height; 
+        uint age;
+        bool senior;
+        //a person who is of older age 
+    }
+    
+    address public owner; 
+    //in the variable you're saying that you create another name that is the owner of the bank and that name reflects and ethereum address
+    
+constructor () public{
+    // a constructor is a data structure that is getting executed automatically when you deploy the contract at the beginning
+    //when you deploy the contract you're telling it very important info that the owner or admin is the msg.sender
+    //same ability to add and save info but for the owner or admin of the contract, he'll interact with the Delete function
+    owner = msg.sender;
+}
+
+mapping (address => Person) private people;
+address [] private creators; 
+//"lets remeber that creators is like the clients"
+//you'll get the number of people when registering
+
+function createPerson (string memory name, uint height,uint age) public{
+    require (age < 150, "people must be below the age of 150");
+    
+    Person memory NewPerson;
+    NewPerson.name=name;
+    NewPerson.height=height;
+    NewPerson.age=age;
+  
+    if (age>= 65){
+    NewPerson.senior=true;
+    }
+    else{
+        NewPerson.senior=false;
+    }
+    
+    insertPerson (NewPerson);
+    creators.push(msg.sender);
+    //every single client that will create itlself will have a number
+}
+    
+function insertPerson (Person memory NewPerson) private{
+        address creator = msg.sender;
+        people[creator] = NewPerson;
+        
+}
+
+    function getPerson ()public view returns (string memory name, uint age, uint height, bool senior){
+         address creator = msg.sender;
+         //the one who will introduce the address will be the message sender / is the client
+         //this is the ability of the clients to add and save information
+        return (people[creator].name, people [creator].age, people [creator].height, people[creator].senior);
+    }
+    
+    function deletePerson (address creator) public{
+    //to delete a person you're going to use the address of the creator or the client    
+    require (msg.sender == owner);
+    //even though its public only the owner will be able to interact with it   
+    delete people [creator];
+    //you will delete the creator inside the people mapping
+    }
+    
+    function getCreator (uint index) public view returns (address){
+        require (msg.sender == owner);
+        return creators [index];
+        //you need it for the creators array so that you can see the numbers
+    }
+    
+}
